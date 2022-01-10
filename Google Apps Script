@@ -1,0 +1,35 @@
+function importMongoDBData() {
+  var sh1 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1")
+  var getData = UrlFetchApp.fetch('https://webhooks.mongodb-realm.com/api/client/v2.0/app/google-syixv/service/googlesheet-connect/incoming_webhook/webhook0').getContentText()
+  var jsonObj = JSON.parse(getData)
+  for(var i=0; i<jsonObj.length; i++){
+    sh1.getRange(i+2,1).setValue(jsonObj[i]._id.$oid)
+    sh1.getRange(i+2,2).setValue(jsonObj[i].Emp_ID.$numberInt)
+    sh1.getRange(i+2,3).setValue(jsonObj[i].Name_Prefix)
+    sh1.getRange(i+2,4).setValue(jsonObj[i].First_Name)
+    sh1.getRange(i+2,5).setValue(jsonObj[i].Last_Name)
+  }
+}
+
+function exportToMongDB(){
+
+  var sh1 =  SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1")
+  var rng =  sh1.getDataRange().getValues();
+
+  for(var i=1;i<rng.length; i++){
+      var formData = {
+      'Id': rng[i][0],
+      'Emp_ID':rng[i][1],
+      'Name_Prefix' : rng[i][2],
+      'First_Name' : rng[i][3],
+      'Last_Name' : rng[i][4]
+      }
+      var params = {
+      'method' : 'post',
+      'payload': formData
+      }
+      var getId = UrlFetchApp.fetch('https://webhooks.mongodb-realm.com/api/client/v2.0/app/googlesheet-gwzfk/service/googlesheet-connect/incoming_webhook/webhook0', params);
+      Logger.log(getId)
+  }
+
+}
