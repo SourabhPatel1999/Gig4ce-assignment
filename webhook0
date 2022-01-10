@@ -1,0 +1,5 @@
+exports = function(payload){
+  const mongodb = context.services.get('mongodb-atlas');
+  const collection = mongodb.db("Gig4cedb").collection("datacollection");
+  return collection.find({}).toArray();
+};
