@@ -1,0 +1,13 @@
+exports = async function(payload) {
+    const mongodb = context.services.get("mongodb-atlas");
+    const db = mongodb.db("Gig4cedb");
+    const collection = db.collection("datacollection");
+    
+    if(payload.query.Id){
+      const result= await collection.updateOne({Emp_ID : parseInt(payload.query.Emp_ID)}, {$set:{Name_Prefix: payload.query.Name_Prefix, First_Name: payload.query.First_Name, Last_Name: payload.query.Last_Name }});
+      if(result) {
+          return payload.query.Id;  
+      }
+      return { text: `Error saving` };
+    }
+}
