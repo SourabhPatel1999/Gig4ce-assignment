@@ -5,7 +5,7 @@ exports = async function(payload) {
     
     if(payload.query.Id){
       const result= await collection.updateOne({Emp_ID : parseInt(payload.query.Emp_ID)}, {$set:{Name_Prefix: payload.query.Name_Prefix, First_Name: payload.query.First_Name, Last_Name: payload.query.Last_Name }});
-      if(result) {
+      if(result){
           return payload.query.Id;  
       }
       return { text: `Error saving` };
