@@ -1,0 +1,10 @@
+import pymongo
+import pandas as pd
+import json
+from pymongo import MongoClient
+
+client = MongoClient("mongodb+srv://sourabh:9TSKBVlLNjNqTzEW@cluster0.iwtul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+df = pd.read_csv("employee.csv")
+data = df.to_dict(orient = "records")
+db = client["Gig4cedb"]
+db.datacollection.insert_many(data)
